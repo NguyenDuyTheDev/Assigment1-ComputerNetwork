@@ -146,11 +146,7 @@ class Client:
             os.remove(CACHE_FILE_NAME + str(self.sessionId) + CACHE_FILE_EXT)
         except:
             pass
-        if self.video_list_index < len(self.video_list) - 1:
-            self.video_list_index += 1
-        else:
-            self.video_list_index = 0
-        self.fileName = self.video_list[self.video_list_index]
+
     def listenRtp(self):
         """Listen for RTP packets."""
         while True:
@@ -304,7 +300,11 @@ class Client:
             request = request + ("CSeq: %d\n" % self.rtspSeq)
             request = request + "Transport: RTP/UDP; client_port= %d\n" % (self.rtpPort)
             self.requestSent = self.SWITCH
-
+            if self.video_list_index < len(self.video_list) - 1:
+                self.video_list_index += 1
+            else:
+                self.video_list_index = 0
+            self.fileName = self.video_list[self.video_list_index]
             # Update time box
             self.timeBox = "0 : 0"
             self.status = Label(self.master, text="Watched time : " + str(self.timeBox), bd=1, relief=SUNKEN,
